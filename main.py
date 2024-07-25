@@ -11,7 +11,11 @@ telbot = telebot.TeleBot(BOT_ID)
 info = {}
 info2 = {}
 
-
+@telbot.message_handler(commands=["watch"])
+def pokas(message:Message):
+    with open(f"{message.from_user.id}.json", "r", encoding="UTF-8") as p:
+        fal = json.load(p)
+        print(fal)
 @telbot.message_handler(commands=["start"])
 def soobsh(message: Message):
     print(message)
@@ -45,7 +49,11 @@ def otvetka2(message):
     info[message.from_user.id]["legality"] = message.text
     print(info)
     if os.path.exists(f"{message.from_user.id}.json"):
-        pass
+        with open(f"{message.from_user.id}.json", "r", encoding="UTF-8") as p:
+            fal = json.load(p)
+            fal.append(info[message.from_user.id])
+        with open(f"{message.from_user.id}.json", "w+", encoding="UTF-8") as f:
+            json.dump( fal,f, ensure_ascii=False)
     else:
 
 
