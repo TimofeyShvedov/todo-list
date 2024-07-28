@@ -15,7 +15,12 @@ info2 = {}
 def pokas(message:Message):
     with open(f"{message.from_user.id}.json", "r", encoding="UTF-8") as p:
         fal = json.load(p)
-        print(fal)
+
+    result = ""
+    for schet, x in enumerate(fal, start=1):
+        result += f"{x['task']} {x['legality']} {schet}  \n"
+
+    telbot.send_message(message.from_user.id,f"{result}")
 @telbot.message_handler(commands=["start"])
 def soobsh(message: Message):
     print(message)
@@ -26,6 +31,7 @@ def soobsh(message: Message):
     knopki.add(knopk)
     # telbot.send_message(message.from_user.id,"вас выследили",reply_markup=knopki)
     telbot.send_sticker(message.from_user.id, "CAACAgIAAxkBAAEMM81mU1B_M45YswKX4Lt-5PM9uaktQAACAQADwDZPExguczCrPy1RNQQ")
+
 
 
 @telbot.message_handler(commands=["add"])
@@ -44,6 +50,7 @@ def otvetka(message):
     telbot.register_next_step_handler(message, otvetka2)
 
 
+
 def otvetka2(message):
     telbot.send_message(message.from_user.id, "Я спать")
     info[message.from_user.id]["legality"] = message.text
@@ -60,14 +67,21 @@ def otvetka2(message):
         with open (f"{message.from_user.id}.json","a+",encoding="UTF-8") as f:
                 json.dump([info[message.from_user.id]],f,ensure_ascii=False)
 
+@telbot.message_handler(commands=["del"])
+def delete(message):
+    pass
 
 
 telbot.polling()
 
 """
-Узнать что такое срезы в пайтоне (старт, стоп, степ)
+Внутри функции делит, нужно сделать:
+1. Задать вопрос юзеру: "какое задание хотите удалить?"
+2. Дождаться ответа от юзера (мы уже так делали 2 раза в этом проекте)
+    - Напомню: после ожидания сделать так, чтобы мы могли перейти на некст функцию (смотреть пример с переходом из функции soobs -> otvetka)
+3. В следующей функции открыть файл джсон (скопировать) на ЧТЕНИЕ  и достать из него весь список задач
+4. Заггулить: что такое функция поп в пайтоне
+5. ПОпытаться из списка удалить то, что напишет юзер.
 
-И как отобразить все буквы через одну в этой переменной:
-x = "Tima, privet. Eto test stro4ka. Попробуй с помощью срезов достать только каждый второй символ"
-
+ОН пишет нам число - мы его удаляем из списка. Задание не очень лёгкое, попытаться часть сделать самому :))
 """
