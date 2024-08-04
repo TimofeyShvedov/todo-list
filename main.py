@@ -97,10 +97,6 @@ def delete2(message):
 
         with open(f"{message.from_user.id}.json", "w+", encoding="UTF-8") as f:
             json.dump(spisok,f,ensure_ascii=False)
-    else:
-        with open(f"{message.from_user.id}.json", "a+", encoding="UTF-8") as f:
-            json.dump([info2[message.from_user.id]], f, ensure_ascii=False)
-            info2.pop()
 
 
 telbot.polling()
